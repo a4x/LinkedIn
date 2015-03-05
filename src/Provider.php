@@ -12,6 +12,16 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected $scopes = ['r_basicprofile', 'r_emailaddress'];
 
+    protected $fields = '';
+
+    public function fields($fields)
+    {
+      $this->fields = $fields;
+
+      return $this;
+    }
+
+
     /**
      * {@inheritdoc}
      */
@@ -36,7 +46,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     protected function getUserByToken($token)
     {
         $response = $this->getHttpClient()->get(
-            'https://api.linkedin.com/v1/people/~:(id,formatted-name,picture-url,email-address)', [
+            'https://api.linkedin.com/v1/people/~:'.$this->fields.'?format=json', [
             'headers' => [
                 'Accept-Language' => 'en-US',
                 'x-li-format'     => 'json',
